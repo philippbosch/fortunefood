@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fortune Food</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        #options {
+            font: 32px Consolas, Menlo, Monaco, "Lucida Console", monospace;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <ul id="options"></ul>
+    
+    <button id="spin">Spin the wheel</button>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script>
+        var options = ['Khartum (Sudanese)','Miss Saigon (Vietnamese)','Spätzle Express','La Piccola Musica', 'Alimentari & Vini (Olmo)', 'Vietnam Baguette','Bastard','Yellow Sunshine (Veggie Burger)','Penny'],
+            $options = $('#options');
+        
+        $.each(options, function(i, option) {
+            var $option = $('<li/>').text(option);
+            $option.appendTo($options);
+        });
+        
+        $('#spin').on('click', function() {
+            $(this).remove();
+            function kickOne() {
+                var $remainingOptions = $options.find('li:not(.out)');
+                if ($remainingOptions.length == 1) {
+                    $remainingOptions.animate({'fontSize': '300%'}).css('color','green');
+                    return;
+                }
+                var num = Math.floor(Math.random() * $remainingOptions.length)
+                $remainingOptions.eq(num).addClass('out').fadeTo(1000, 0.1, kickOne);
+            }
+            kickOne();
+        });
+    </script>
+</body>
+</html>
